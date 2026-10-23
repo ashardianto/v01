@@ -1,4 +1,3 @@
-// components/BattleArena.tsx
 import Fighter from "./Fighter";
 
 interface BattleArenaProps {
@@ -68,7 +67,7 @@ export default function BattleArena({
           </span>
         </div>
 
-        {/* Monster / Boss (Gambar berubah otomatis jika sedang stage boss) */}
+        {/* Monster / Boss  */}
         <div className="flex w-[26%] flex-col">
           <Fighter
             label={enemyHp === 0 ? "DOWN" : isBossLevel ? "BOSS" : "ENEMY"}
