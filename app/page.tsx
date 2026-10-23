@@ -6,11 +6,6 @@ import BattleArena from "@/components/ui/BattleArena";
 import BattleFooter from "@/components/ui/BattleFooter";
 import RewardModal from "@/components/ui/RewardModal";
 
-const initialLog = [
-  "A cold wind sweeps across the arena...",
-  "Level 1 initialized with exactly 50 Enemy HP.",
-];
-
 export default function Page() {
   const [level, setLevel] = useState(1);
 
@@ -46,7 +41,6 @@ export default function Page() {
 
   const [enemyHp, setEnemyHp] = useState(enemyMaxHp);
   const [turn, setTurn] = useState<"PLAYER" | "ENEMY">("PLAYER");
-  const [log, setLog] = useState(initialLog);
   const [isGameOver, setIsGameOver] = useState(false);
 
   function attack() {
@@ -66,12 +60,6 @@ export default function Page() {
       const nextLevel = level + 1;
 
       if (isBossLevel) {
-        setLog(
-          [
-            `BOSS DEFEATED! Choose reward before continue to level ${nextLevel}.`,
-            ...log,
-          ].slice(0, 4),
-        );
         setIsChoosingReward(true);
         return;
       }
@@ -80,12 +68,6 @@ export default function Page() {
       return;
     }
 
-    setLog(
-      [
-        `Dealer deals ${finalPlayerDamage.toFixed(1)} damage to enemy.`,
-        ...log,
-      ].slice(0, 4),
-    );
     setTurn("ENEMY");
 
     // 2. Enemy turn
@@ -99,23 +81,8 @@ export default function Page() {
 
       if (nextTankHp === 0) {
         setIsGameOver(true);
-        setLog(
-          [
-            `Enemy attacks Tank for ${finalTankDamage.toFixed(1)} damage. Tank collapsed!`,
-            "GAME OVER. Click Reset to return to Level 1.",
-            ...log,
-          ].slice(0, 4),
-        );
         return;
       }
-
-      setLog(
-        [
-          `Enemy hits Tank for ${finalTankDamage.toFixed(1)} damage.`,
-          `Dealer deals ${finalPlayerDamage.toFixed(1)} damage to enemy.`,
-          ...log,
-        ].slice(0, 4),
-      );
       setTurn("PLAYER");
     }, 800);
   }
@@ -126,8 +93,6 @@ export default function Page() {
     const nextEnemyMaxHp = nextIsBoss
       ? Math.round(nextBaseHp * 1.5)
       : nextBaseHp;
-
-    setLog([`Ascending to Level ${targetLevel}...`, ...log].slice(0, 4));
 
     setTimeout(() => {
       setLevel(targetLevel);
@@ -157,20 +122,8 @@ export default function Page() {
   function handleSelectReward(type: "weapon" | "armor") {
     if (type === "weapon") {
       setBonusDealerAtk((prev) => prev + 15);
-      setLog(
-        [
-          `Mendapatkan Weapon Upgrade! Dealer ATK meningkat permanen (+15).`,
-          ...log,
-        ].slice(0, 4),
-      );
     } else {
       setBonusTankDef((prev) => prev + 5);
-      setLog(
-        [
-          `Mendapatkan Armor Upgrade! Tank DEF meningkat permanen (+5%).`,
-          ...log,
-        ].slice(0, 4),
-      );
     }
 
     setIsChoosingReward(false);
@@ -186,7 +139,6 @@ export default function Page() {
     setTurn("PLAYER");
     setIsGameOver(false);
     setIsChoosingReward(false);
-    setLog(["Game reset to Level 1. Stats reset.", ...initialLog]);
   }
 
   return (
